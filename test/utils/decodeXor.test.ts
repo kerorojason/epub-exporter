@@ -21,6 +21,6 @@ describe('decodeXor', () => {
     const encryptedContent = fs.readFileSync('test/fixtures/decodeXor/encryptedBody');
     const expectedContent = fs.readFileSync('test/fixtures/decodeXor/decodedBody');
 
-    expect(decodeXor(key, encryptedContent)).toEqual(expectedContent);
+    expect(decodeXor(key, encryptedContent as any)).toEqual(expectedContent);
   });
 });

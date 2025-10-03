@@ -122,7 +122,7 @@ class BooksExporter extends BaseExporter {
           const url = `${downloadLink}${path}`;
           const key = generateKey(url, downloadToken);
 
-          this.files[path] = decodeXor(key, fileContent);
+          this.files[path] = decodeXor(key, fileContent) as any;
         }
       } catch (e) {
         if (ignoreErrorPaths.includes(path)) {

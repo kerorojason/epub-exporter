@@ -6,7 +6,7 @@ const get = async (key: string) => new Promise(resolve => {
   mockedChrome.storage.local.get(key, items => resolve(items[key]));
 });
 const set = (key: string, value: unknown) => new Promise(resolve => {
-  mockedChrome.storage.local.set({ [key]: value }, resolve);
+  mockedChrome.storage.local.set({ [key]: value }, () => resolve(undefined));
 });
 
 describe('StorageHandler', () => {
