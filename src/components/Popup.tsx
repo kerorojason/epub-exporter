@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -10,7 +10,7 @@ import {
   ListItemText,
   LinearProgress,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import style from '@src/stylesheets/popup.scss';
 

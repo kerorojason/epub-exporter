@@ -1,16 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { createRoot } from 'react-dom/client';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import 'typeface-roboto';
 
 import Popup from '@src/components/Popup';
 
 const container = document.querySelector('#popup');
-ReactDOM.render(
+const root = createRoot(container!);
+root.render(
   <>
     <CssBaseline />
     <Popup />
   </>,
-  container,
 );
