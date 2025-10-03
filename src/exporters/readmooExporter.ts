@@ -31,13 +31,15 @@ const obtainBasePath = (path: string) => {
   return segments.join('/');
 };
 
+// Declarative Net Request rules are now handled in rules.json
+// This function is kept for compatibility but no longer used
 const modifyHeaderBeforeRequest = (details: WebRequestHeadersDetails) => {
   const newRef = 'https://reader.readmoo.com/reader/index.html';
-  const refererHeader = details.requestHeaders.find(({ name }) => name.toLowerCase() === 'referer');
+  const refererHeader = details.requestHeaders?.find(({ name }) => name.toLowerCase() === 'referer');
   if (refererHeader) {
     refererHeader.value = newRef;
   } else {
-    details.requestHeaders.push({ name: 'Referer', value: newRef });
+    details.requestHeaders?.push({ name: 'Referer', value: newRef });
   }
 
   return { requestHeaders: details.requestHeaders };
@@ -49,11 +51,14 @@ class ReadmooExporter extends BaseExporter {
   private authorizationToken = '';
 
   async export(): Promise<Blob> {
-    chrome.webRequest.onBeforeSendHeaders.addListener(
-      modifyHeaderBeforeRequest,
-      { urls: ['*://reader.readmoo.com/*'] },
-      ['requestHeaders', 'blocking', 'extraHeaders'],
-    );
+    // Enable declarative net request rules for header modification
+    try {
+      await chrome.declarativeNetRequest.updateEnabledRulesets({
+        enableRulesetIds: ['readmoo_rules']
+      });
+    } catch (error) {
+      console.warn('Failed to enable declarative net request rules:', error);
+    }
 
     const containerXmlPath = 'META-INF/container.xml';
     const encryptionXmlPath = 'META-INF/encryption.xml';
@@ -65,7 +70,14 @@ class ReadmooExporter extends BaseExporter {
     await this.batchFetch([rootFilePath]);
     await this.batchFetch(this.contentFilePaths(rootFilePath));
 
-    chrome.webRequest.onBeforeSendHeaders.removeListener(modifyHeaderBeforeRequest);
+    // Disable rules after use (optional)
+    try {
+      await chrome.declarativeNetRequest.updateEnabledRulesets({
+        disableRulesetIds: ['readmoo_rules']
+      });
+    } catch (error) {
+      console.warn('Failed to disable declarative net request rules:', error);
+    }
 
     return this.buildEPUB();
   }

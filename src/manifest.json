@@ -2,13 +2,12 @@
   "name": "Replaced with name in package.json by webpack",
   "version": "Replaced with version in package.json by webpack",
   "description": "Replaced with description in package.json by webpack",
-  "manifest_version": 2,
-  "browser_action": {
+  "manifest_version": 3,
+  "action": {
     "default_popup": "popup.html"
   },
   "background": {
-    "scripts": ["background.js"],
-    "persistent": true
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
@@ -17,11 +16,21 @@
     }
   ],
   "permissions": [
-    "<all_urls>",
     "storage",
     "activeTab",
     "downloads",
-    "webRequest",
-    "webRequestBlocking"
-  ]
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "readmoo_rules",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  }
 }

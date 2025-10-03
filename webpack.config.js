@@ -32,6 +32,10 @@ module.exports = {
           to: path.join(appDist, 'manifest.json'), 
           transform: transformManifest 
         },
+        { 
+          from: path.join(appSrc, 'rules.json'), 
+          to: path.join(appDist, 'rules.json')
+        },
       ],
     }),
     new HtmlWebpackPlugin({ filename: 'popup.html', template: path.join(appSrc, 'popup.html'), chunks: ['popup'] }),

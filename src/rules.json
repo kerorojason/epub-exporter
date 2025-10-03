@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        {
+          "header": "Referer",
+          "operation": "set",
+          "value": "https://reader.readmoo.com/reader/index.html"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*://reader.readmoo.com/*",
+      "resourceTypes": ["xmlhttprequest", "other"]
+    }
+  }
+]
